@@ -27,6 +27,17 @@ const getMatchText = (channel) => {
     return text;
 }
 
+const genCustomChannel = (name, teamId, channelId) => {
+    return {
+        title: name,
+        valid: true,
+        autocomplete: name,
+        arg: `slack://channel?team=${teamId}&id=${channelId}`,
+        subtitle: '',
+        match: name
+    }
+};
+
 const actions = {
     async setChannels(channels) {
         let items = [];
@@ -43,6 +54,10 @@ const actions = {
                 items.push(channel)
             }
         });
+
+        // Paste custom channels here
+        //items.push(genCustomChannel('YOUR CHANNEL NAME', 'YOUR TEAM ID', 'YOUR CHANNEL ID'));
+
         store.data.items = items
         await store.write()
     }
