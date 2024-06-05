@@ -25,7 +25,7 @@ Note: This workflow is not affiliated with or endorsed by Slack Technologies, In
 ---
 # How to import slack private channel
 
-Since the original project has been closed, I'm just Forking it over to share how to import slack private channel.
+Since the original project has been closed, I'm just Forking it over to share how to import slack private channel and external user.
 
 1, Open The Slack on browser
 https://app.slack.com/client/
@@ -74,6 +74,40 @@ items.push(genCustomChannel("channel2", "XXX", "ZZZ"));//https://app.slack.com/c
 
 
 4, Copy the output and paste it to the `store\channels.js` file
+
+5, Follow 3, 4, to store\users.js.
+
+```code
+// Function to create formatted user strings
+function genUserCode(name, teamId, userId) {
+    return `items.push(genCustomUser("${name}", "${teamId}", "${userId}"))`;
+}
+
+
+// Main function to extract data from the DOM
+function extractUserlData() {
+    const teamId = new URL(window.location.href).pathname.split('/')[2];
+    const items = [];  // Array to store final results
+    const channels = document.querySelectorAll('.p-channel_sidebar__channel'); // Select all channel DOM elements
+
+    channels.forEach(channel => {
+        const channelNameElement = channel.querySelector('.p-channel_sidebar__name'); // Get the channel name element
+        const spans = channelNameElement.querySelectorAll('span'); // Get all span elements within the channel name element
+
+        if (spans.length === 2) { // Check if there are exactly 2 span mean external user
+            const channelName = spans[0].textContent.trim(); // Get the text content of the first span element
+            const channelId = channel.getAttribute('data-qa-channel-sidebar-channel-id'); // Get channel ID
+            const channelOutput = genUserCode(channelName, teamId, channelId); // Format output
+            const slackLink = `https://app.slack.com/client/${teamId}/${channelId}`; // Assume team ID is fixed
+            items.push(`${channelOutput};//${slackLink}`); // Add formatted string to array
+        }
+    });
+    console.log(items.join('\n'));
+}
+
+// Execute function
+extractUserlData();
+```
 
 5, Run `update slack users and channels` in Alfred
 

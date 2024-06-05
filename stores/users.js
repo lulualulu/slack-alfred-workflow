@@ -40,6 +40,17 @@ const getUserSubtitle = (user) => {
     return subtitle
 }
 
+const genCustomUser = (name, teamId, userId) => {
+    return {
+        title: name,
+        valid: true,
+        autocomplete: name,
+        arg: `slack://user?team=${teamId}&id=${userId}`,
+        subtitle: '',
+        match: name
+    }
+}
+
 const actions = {
     async setUsers(users) {
         let items = []
@@ -59,7 +70,8 @@ const actions = {
             }
             items.push(user)
         });
-
+        // Paste custom user here
+        //items.push(genCustomUser('YOUR USER NAME', 'YOUR TEAM ID', 'YOUR USER ID'));
         store.data.items = items;
         await store.write()
     }
