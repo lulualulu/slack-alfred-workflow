@@ -37,7 +37,7 @@ https://app.slack.com/client/
 
 ```code
 // Function to create formatted channel strings
-function genCode(name, teamId, channelId) {
+function genChannelCode(name, teamId, channelId) {
     return `items.push(genCustomChannel("${name}", "${teamId}", "${channelId}"))`;
 }
 
@@ -52,7 +52,7 @@ function extractChannelData() {
         if (lockIcon) {
             const channelName = channel.querySelector('.p-channel_sidebar__name').textContent.trim(); // Get channel name
             const channelId = channel.getAttribute('data-qa-channel-sidebar-channel-id'); // Get channel ID
-            const channelOutput = genCode(channelName, teamId, channelId); // Format output
+            const channelOutput = genChannelCode(channelName, teamId, channelId); // Format output
             const slackLink = `https://app.slack.com/client/${teamId}/${channelId}`; // Assume team ID is fixed
             items.push(`${channelOutput};//${slackLink}`); // Add formatted string to array
         }
